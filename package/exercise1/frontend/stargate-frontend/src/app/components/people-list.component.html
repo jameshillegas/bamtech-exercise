@@ -1,0 +1,44 @@
+<app-breadcrumb [items]="[{ label: 'Home', url: '/' }, { label: 'People', url: '/people' }]"></app-breadcrumb>
+
+<div class="card">
+  <div class="flex justify-between">
+    <h2>Person Lookup</h2>
+    <button routerLink="/people/add" class="button primary">Add New Person</button>
+  </div>
+  <div>
+    <p class="text-muted">Search for any person in the database by name.</p>
+  </div>
+  <form class="flex mb-2" (ngSubmit)="lookupPerson()">
+    <input [(ngModel)]="query" name="name" class="input" placeholder="Name" required />
+    <div>
+      <button type="submit" class="button primary">Search</button>
+      <button type="button" class="button secondary ml-3" (click)="load()" *ngIf="searchedWithQuery">Reset</button>
+    </div>
+  </form>  
+  <div *ngIf="error()" class="badge danger mt-2">{{error()}}</div>
+  <app-progress-loader [visible]="loading()"></app-progress-loader>
+  <table class="table mt-2" *ngIf="people().length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of people()" >
+        <td>{{p.personId}}</td>
+        <td>{{p.name}}</td>
+          <td>
+            <button
+              (click)="routeToDetails(p.name)"
+              class="button"
+            >
+              View
+            </button>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!people().length" class="text-muted mt-2">No people yet.</p>
+</div>

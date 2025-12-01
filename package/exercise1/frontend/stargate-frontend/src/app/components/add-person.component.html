@@ -1,0 +1,11 @@
+<app-breadcrumb [items]="[{ label: 'Home', url: '/' }, { label: 'People', url: '/people' }, { label: 'Add', url: '/people' }]"></app-breadcrumb>
+
+<div class="card">
+	<h2>Add Person</h2>
+	<form class="flex" (ngSubmit)="addPerson()">
+		<input [(ngModel)]="name" name="name" class="input" placeholder="Full Name" required />
+		<button type="submit" class="button primary">Save</button>
+	</form>
+	<div *ngIf="error()" class="badge danger mt-2">{{ error() }}</div>
+</div>
+

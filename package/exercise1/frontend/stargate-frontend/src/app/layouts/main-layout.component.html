@@ -1,0 +1,22 @@
+<div class="app-layout">
+  <header class="app-header">
+    <nav class="navbar">
+      <div class="brand">
+        <span class="chip">Stargate Ops</span>
+      </div>
+      <div class="nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">Home</a>
+        <a routerLink="/people" routerLinkActive="active" class="nav-link">People</a>
+        <a routerLink="/astronaut" routerLinkActive="active" class="nav-link">Astronaut Details</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2025 Astronaut Career Tracking System (ACTS)</p>
+  </footer>
+</div>

@@ -1,0 +1,46 @@
+# Root .gitignore for .NET, Angular, and SQLite
+
+# .NET / C#
+bin/
+obj/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+TestResults/
+*.codecoverage
+*.coverage*
+
+# EF Core Migrations artifacts (if any temp files)
+*.Designer.cs
+
+# Angular / Node
+node_modules/
+dist/
+.angular/
+.npmrc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+package-lock.json
+
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+
+# Environment / local config
+.env
+.env.*
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+# OS files
+.DS_Store
+Thumbs.db

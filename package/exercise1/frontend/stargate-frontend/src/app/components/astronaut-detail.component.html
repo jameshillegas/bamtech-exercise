@@ -1,0 +1,34 @@
+<app-breadcrumb [items]="[{ label: 'Home', url: '/' }, { label: 'Astronaut Detail', url: '/astronaut' }]"></app-breadcrumb>
+<div class="card">
+  <h2>Astronaut Detail Lookup</h2>
+  <form class="flex mb-2" (ngSubmit)="lookup()">
+    <input [(ngModel)]="query" name="query" class="input" placeholder="Person Name" required />
+    <button type="submit" class="button primary">Search</button>
+  </form>
+  <div *ngIf="error()" class="badge danger mt-2">{{error()}}</div>
+  <app-progress-loader [visible]="loading()"></app-progress-loader>
+  <ng-container *ngIf="data() as d">
+    <div *ngIf="d.person" class="mt-2">
+      <h3>{{d.person.name}}</h3>
+      <p class="text-muted">Rank: {{d.person.currentRank || 'N/A'}}</p>
+      <p class="text-muted">Current Duty: {{d.person.currentDutyTitle || 'N/A'}}</p>
+      <p class="text-muted">Career: {{localDateString(d.person.careerStartDate)}} - {{localDateString(d.person.careerEndDate, 'Present')}}</p>
+      <h4 class="mt-2">Duties</h4>
+      <table class="table mt-1" *ngIf="d.astronautDuties.length">
+        <thead>
+          <tr><th>Start</th><th>End</th><th>Title</th><th>Rank</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let duty of d.astronautDuties">
+            <td>{{duty.dutyStartDate | date}}</td>
+            <td>{{duty.dutyEndDate ? (duty.dutyEndDate | date) : 'Current'}}</td>
+            <td>{{duty.dutyTitle}}</td>
+            <td>{{duty.rank}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="!d.astronautDuties.length" class="text-muted mt-1">No duties found.</p>
+    </div>
+    <p *ngIf="!d.person && !error()" class="text-muted mt-2">No person found.</p>
+  </ng-container>
+</div>

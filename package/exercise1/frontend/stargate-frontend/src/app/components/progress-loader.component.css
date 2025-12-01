@@ -1,0 +1,24 @@
+.loader {
+  position: relative;
+  width: 100%;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 25%;
+  background: var(--loader-color, var(--primary));
+  border-radius: inherit;
+  animation: indeterminate 1.2s ease-in-out infinite alternate;
+  box-shadow: 0 0 12px 1px color-mix(in srgb, var(--loader-color, var(--primary)) 40%, transparent);
+}
+
+@keyframes indeterminate {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(300%); }
+}

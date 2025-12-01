@@ -1,0 +1,8 @@
+.breadcrumb { margin-bottom: .75rem; }
+.breadcrumb ol { list-style: none; padding: 0; margin: 0; display: flex; gap: .5rem; align-items: center; }
+.breadcrumb li { display: inline-flex; align-items: center; gap: .5rem; color: var(--muted); }
+.breadcrumb a { color: var(--primary); text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb .current { color: var(--text); }
+.breadcrumb li::after { content: '/'; color: var(--muted); margin-left: .5rem; }
+.breadcrumb li:last-child::after { content: ''; }
