@@ -46,16 +46,6 @@ namespace StargateAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("AstronautDetail");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CareerStartDate = new DateTime(2025, 12, 1, 9, 24, 47, 211, DateTimeKind.Local).AddTicks(2046),
-                            CurrentDutyTitle = "Commander",
-                            CurrentRank = "1LT",
-                            PersonId = 1
-                        });
                 });
 
             modelBuilder.Entity("StargateAPI.Business.Data.AstronautDuty", b =>
@@ -86,16 +76,33 @@ namespace StargateAPI.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("AstronautDuty");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DutyStartDate = new DateTime(2025, 12, 1, 9, 24, 47, 211, DateTimeKind.Local).AddTicks(2095),
-                            DutyTitle = "Commander",
-                            PersonId = 1,
-                            Rank = "1LT"
-                        });
+            modelBuilder.Entity("StargateAPI.Business.Data.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Data")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroupIdentifier")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsException")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Log");
                 });
 
             modelBuilder.Entity("StargateAPI.Business.Data.Person", b =>
@@ -118,20 +125,6 @@ namespace StargateAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("Person");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "John Doe",
-                            NormalizedName = "JOHN DOE"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Jane Doe",
-                            NormalizedName = "JANE DOE"
-                        });
                 });
 
             modelBuilder.Entity("StargateAPI.Business.Data.AstronautDetail", b =>
