@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Dapper;
 using StargateAPI.Business.Data;
 using StargateAPI.Business.Commands;
-using FluentValidation;
-using StargateAPI.Business.Exceptions;
 using StargateAPI.Business.Commands.Validators;
 
 namespace StargateAPI.Tests.Business.Commands;
-
 
 public class CreateAstronautDutyValidatorTests
 {

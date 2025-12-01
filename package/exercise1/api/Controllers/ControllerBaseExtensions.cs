@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace StargateAPI.Controllers
-{
+namespace StargateAPI.Controllers;
     public static class ControllerBaseExtensions
     {
 
@@ -12,4 +11,3 @@ namespace StargateAPI.Controllers
             return httpResponse;
         }
     }
-}

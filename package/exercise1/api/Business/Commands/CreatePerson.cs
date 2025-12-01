@@ -1,56 +1,52 @@
-﻿using FluentValidation;
-using MediatR;
-using MediatR.Pipeline;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StargateAPI.Business.Data;
 using StargateAPI.Business.Exceptions;
-using StargateAPI.Controllers;
 
-namespace StargateAPI.Business.Commands
+namespace StargateAPI.Business.Commands;
+
+public class CreatePerson : IRequest<CreatePersonResult>
 {
-    public class CreatePerson : IRequest<CreatePersonResult>
+    public required string Name { get; set; } = string.Empty;
+}
+
+public class CreatePersonHandler : IRequestHandler<CreatePerson, CreatePersonResult>
+{
+    private readonly StargateContext _context;
+
+    public CreatePersonHandler(StargateContext context)
     {
-        public required string Name { get; set; } = string.Empty;
+        _context = context;
     }
-
-    public class CreatePersonHandler : IRequestHandler<CreatePerson, CreatePersonResult>
+    public async Task<CreatePersonResult> Handle(CreatePerson request, CancellationToken cancellationToken)
     {
-        private readonly StargateContext _context;
 
-        public CreatePersonHandler(StargateContext context)
+        //check if person with same name exists
+        var normalized = request.Name.ToUpperInvariant();
+        var exists = await _context.People.AsNoTracking().AnyAsync(p => p.NormalizedName == normalized, cancellationToken);
+        if (exists)
         {
-            _context = context;
+            throw new ConflictException("Person with the same name already exists.");
         }
-        public async Task<CreatePersonResult> Handle(CreatePerson request, CancellationToken cancellationToken)
+
+        var newPerson = new Person()
         {
+            Name = request.Name,
+            NormalizedName = request.Name.ToUpperInvariant()
+        };
 
-            //check if person with same name exists
-            var normalized = request.Name.ToUpperInvariant();
-            var exists = await _context.People.AsNoTracking().AnyAsync(p => p.NormalizedName == normalized, cancellationToken);
-            if (exists)
-            {
-                throw new ConflictException("Person with the same name already exists.");
-            }
-            
-            var newPerson = new Person()
-            {
-                Name = request.Name,
-                NormalizedName = request.Name.ToUpperInvariant()
-            };
+        await _context.People.AddAsync(newPerson);
 
-            await _context.People.AddAsync(newPerson);
+        await _context.SaveChangesAsync();
 
-            await _context.SaveChangesAsync();
-
-            return new CreatePersonResult()
-            {
-                Id = newPerson.Id
-            };
-        }
+        return new CreatePersonResult()
+        {
+            Id = newPerson.Id
+        };
     }
+}
 
-    public class CreatePersonResult
-    {
-        public int Id { get; set; }
-    }
+public class CreatePersonResult
+{
+    public int Id { get; set; }
 }
