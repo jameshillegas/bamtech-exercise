@@ -11,5 +11,5 @@ import { CommonModule } from '@angular/common';
 export class ProgressLoaderComponent {
   @Input() visible = true;
   @Input() height = 3; // px
-  @Input() color?: string; // override primary color
+  @Input() color?: string;
 }

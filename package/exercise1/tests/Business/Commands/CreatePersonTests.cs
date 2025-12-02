@@ -41,7 +41,6 @@ public class CreatePersonTests
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Id, Is.GreaterThan(0));
 
-        //verify in db
         var personInDb = await _context!.Connection.QueryFirstOrDefaultAsync("SELECT * FROM Person WHERE Id = @Id", new { Id = result.Id });
         Assert.That(personInDb, Is.Not.Null);
         Assert.That(personInDb!.Name, Is.EqualTo("Alice Johnson"));

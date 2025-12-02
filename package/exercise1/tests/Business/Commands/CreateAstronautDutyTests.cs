@@ -44,7 +44,6 @@ public class CreateAstronautDutyTests
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Id, Is.EqualTo(2));
 
-        //verify in db
         var dutyInDb = await _context!.Connection.QueryFirstOrDefaultAsync("SELECT * FROM AstronautDuty WHERE Id = @Id", new { Id = result.Id });
         Assert.That(dutyInDb, Is.Not.Null);
         Assert.That(dutyInDb!.DutyTitle, Is.EqualTo("Mission Specialist"));
@@ -57,7 +56,6 @@ public class CreateAstronautDutyTests
         var handler = new CreateAstronautDutyHandler(_context!);
         var result = await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "Pilot", Rank = "Captain", DutyStartDate = DateTime.UtcNow }, CancellationToken.None);
 
-        //verify in db
         var personInDb = await _context!.Connection.QueryFirstOrDefaultAsync("SELECT * FROM AstronautDetail WHERE PersonId = @Id", new { Id = 1 });
         Assert.That(personInDb, Is.Not.Null);
         Assert.That(personInDb!.CurrentDutyTitle, Is.EqualTo("Pilot"));
@@ -71,7 +69,6 @@ public class CreateAstronautDutyTests
         var handler = new CreateAstronautDutyHandler(_context!);
         var result = await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "Pilot", Rank = "Captain", DutyStartDate = dutyStartDate }, CancellationToken.None);
 
-        //verify in db
         var dutyInDb = await _context!.Connection.QueryFirstOrDefaultAsync("SELECT * FROM AstronautDuty WHERE Id = @Id", new { Id = result.Id });
         Assert.That(dutyInDb, Is.Not.Null);
         //convert the duty start date to DateTime to avoid precision issues
@@ -124,7 +121,6 @@ public class CreateAstronautDutyTests
         var now = DateTime.UtcNow.Date.AddDays(1);
         await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "RETIRED", Rank = "Captain", DutyStartDate = now }, CancellationToken.None);
 
-        //verify in db
         var personInDb = await _context!.Connection.QueryFirstOrDefaultAsync("SELECT * FROM AstronautDetail WHERE PersonId = @Id", new { Id = 1 });
         Assert.That(personInDb, Is.Not.Null);
         Assert.That(personInDb!.CurrentDutyTitle, Is.EqualTo("RETIRED"));

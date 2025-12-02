@@ -68,7 +68,6 @@ public class UpdatePersonTests
 
         Assert.ThrowsAsync<BusinessRuleException>(async () =>
         {
-            // Attempt to update person with Id 1 to a name that already exists
             await handler.Handle(new UpdatePerson { Id = 1, Name = "Robert Losier" }, CancellationToken.None);
         });
     }
