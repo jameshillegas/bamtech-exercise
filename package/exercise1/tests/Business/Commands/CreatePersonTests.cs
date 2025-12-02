@@ -51,7 +51,7 @@ public class CreatePersonTests
     public void CreatePerson_Throws_When_Name_Exists()
     {
         var handler = new CreatePersonHandler(_context!);
-        Assert.ThrowsAsync<ConflictException>(async () =>
+        Assert.ThrowsAsync<BusinessRuleException>(async () =>
         {
             await handler.Handle(new CreatePerson { Name = "John Doe" }, CancellationToken.None);
         });

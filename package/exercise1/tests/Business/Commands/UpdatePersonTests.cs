@@ -66,7 +66,7 @@ public class UpdatePersonTests
         //put a 2nd name in the db to cause conflict
         conn.Execute("INSERT INTO Person (Id, Name, NormalizedName) VALUES (2, 'Robert Losier', 'ROBERT LOSIER');");
 
-        Assert.ThrowsAsync<ConflictException>(async () =>
+        Assert.ThrowsAsync<BusinessRuleException>(async () =>
         {
             // Attempt to update person with Id 1 to a name that already exists
             await handler.Handle(new UpdatePerson { Id = 1, Name = "Robert Losier" }, CancellationToken.None);

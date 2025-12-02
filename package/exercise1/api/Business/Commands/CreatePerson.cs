@@ -26,7 +26,7 @@ public class CreatePersonHandler : IRequestHandler<CreatePerson, CreatePersonRes
         var exists = await _context.People.AsNoTracking().AnyAsync(p => p.NormalizedName == normalized, cancellationToken);
         if (exists)
         {
-            throw new ConflictException("Person with the same name already exists.");
+            throw new BusinessRuleException("Person with the same name already exists.");
         }
 
         var newPerson = new Person()

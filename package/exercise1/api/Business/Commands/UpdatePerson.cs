@@ -31,7 +31,7 @@ public class UpdatePersonHandler : IRequestHandler<UpdatePerson, UpdatePersonRes
         var nameInUse = await _context.People.AnyAsync(p => p.Id != request.Id && p.NormalizedName == request.Name.ToUpperInvariant(), cancellationToken);
         if (nameInUse)
         {
-            throw new ConflictException("Person with the same name already exists.");
+            throw new BusinessRuleException("Person with the same name already exists.");
         }
 
         person.Name = request.Name;

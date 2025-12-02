@@ -82,6 +82,13 @@ public class CreateAstronautDutyHandler : IRequestHandler<CreateAstronautDuty, C
 
         if (astronautDuty != null)
         {
+            //double check that the new start date is after the latest duty start date
+            //note: this is also validated in the validator, but we double check here to ensure business rule enforcement and prevent race conditions
+            if (request.DutyStartDate <= astronautDuty.DutyStartDate)
+            {
+                throw new BusinessRuleException("New duty start date must be after the latest existing duty start date for the person.");
+            }
+
             astronautDuty.DutyEndDate = request.DutyStartDate.AddDays(-1).Date;
             _context.AstronautDuties.Update(astronautDuty);
         }

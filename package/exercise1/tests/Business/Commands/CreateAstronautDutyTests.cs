@@ -67,7 +67,7 @@ public class CreateAstronautDutyTests
     [Test]
     public async Task CreateAstronautDuty_Sets_DutyStartDate_Correctly()
     {
-        var dutyStartDate = DateTime.UtcNow.AddDays(-10).Date;
+        var dutyStartDate = DateTime.UtcNow.AddDays(2).Date;
         var handler = new CreateAstronautDutyHandler(_context!);
         var result = await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "Pilot", Rank = "Captain", DutyStartDate = dutyStartDate }, CancellationToken.None);
 
@@ -94,7 +94,7 @@ public class CreateAstronautDutyTests
     public async Task CreateAstronautDuty_Sets_Previous_Duty_End_Date()
     {
         var handler = new CreateAstronautDutyHandler(_context!);
-        var now = DateTime.UtcNow.Date;
+        var now = DateTime.UtcNow.AddDays(1).Date;
         await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "Pilot", Rank = "Captain", DutyStartDate = now }, CancellationToken.None);
 
         var previousDutyInDb = await _context!.Connection.QueryFirstOrDefaultAsync("SELECT * FROM AstronautDuty WHERE Id = @Id", new { Id = 1 });
@@ -121,7 +121,7 @@ public class CreateAstronautDutyTests
     public async Task CreateAstronautDuty_Sets_CareerEndDate_When_Retired()
     {
         var handler = new CreateAstronautDutyHandler(_context!);
-        var now = DateTime.UtcNow.Date;
+        var now = DateTime.UtcNow.Date.AddDays(1);
         await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "RETIRED", Rank = "Captain", DutyStartDate = now }, CancellationToken.None);
 
         //verify in db
@@ -134,6 +134,20 @@ public class CreateAstronautDutyTests
         var careerEndDateInDb = DateTime.Parse(personInDb.CareerEndDate.ToString());
         var expectedCareerEndDate = now.Date.AddDays(-1);
         Assert.That(careerEndDateInDb, Is.EqualTo(expectedCareerEndDate).Within(TimeSpan.FromSeconds(1)));
+    }
+
+    [Test]
+    public void CreateAstronautDuty_Throws_When_New_DutyStartDate_Before_Latest_Existing_DutyStartDate()
+    {
+        //TODO: This test might be invalid based on review of the requirement.
+
+        var handler = new CreateAstronautDutyHandler(_context!);
+        var pastDate = DateTime.UtcNow.AddDays(-20); //earlier than existing duty start date
+
+        Assert.ThrowsAsync<BusinessRuleException>(async () =>
+        {
+            var result = await handler.Handle(new CreateAstronautDuty { Name = "John Doe", DutyTitle = "Pilot", Rank = "Captain", DutyStartDate = pastDate }, CancellationToken.None);
+        });
     }
 
     [TearDown]
