@@ -31,11 +31,15 @@
         <td>{{p.name}}</td>
           <td>
             <button
+              *ngIf="p.careerStartDate; else noDetails"
               (click)="routeToDetails(p.name)"
               class="button"
             >
-              View
+              Astronaut Details
             </button>
+            <ng-template #noDetails>
+              <span class="text-muted">No details available</span>
+            </ng-template>
           </td>
       </tr>
     </tbody>
